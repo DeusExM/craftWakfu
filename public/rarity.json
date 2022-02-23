@@ -1,0 +1,74 @@
+[
+  {
+    "id": 0,
+    "name": [
+      "Ancien objet",
+      "Old Item",
+      "Objeto antiguo",
+      "Item Antigo"
+    ]
+  },
+  {
+    "id": 1,
+    "name": [
+      "Commun",
+      "Common",
+      "Común",
+      "Comum"
+    ]
+  },
+  {
+    "id": 2,
+    "name": [
+      "Rare",
+      "Rare",
+      "Raro",
+      "Raro"
+    ]
+  },
+  {
+    "id": 3,
+    "name": [
+      "Mythique",
+      "Mythical",
+      "Mítico",
+      "Mítico"
+    ]
+  },
+  {
+    "id": 4,
+    "name": [
+      "Légendaire",
+      "Legendary",
+      "Legendario",
+      "Lendário"
+    ]
+  },
+  {
+    "id": 5,
+    "name": [
+      "Relique",
+      "Relic",
+      "Reliquia",
+      "Relíquia"
+    ]
+  },
+  {
+    "id": 6,
+    "name": [
+      "Souvenir",
+      "Souvenir",
+      "Recuerdo",
+      "Lembrança"
+    ]
+  },
+  {
+    "id": 7,
+    "name": [
+      "Epique",
+      "Epic",
+      "Epico",
+      "Épico"
+    ]
+  }
+]

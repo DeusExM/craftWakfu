@@ -1,0 +1,146 @@
+[
+  {
+    "id": -1,
+    "name": [
+      "Tous les métiers",
+      "Every Job",
+      "Cada oficio",
+      "Todas as Profissões"
+    ]
+  },
+  {
+    "id": 71,
+    "name": [
+      "Forestier",
+      "Lumberjack",
+      "Leñador",
+      "Lenhador"
+    ]
+  },
+  {
+    "id": 0,
+    "name": [
+      "Autre",
+      "Lumberjack",
+      "Leñador",
+      "Lenhador"
+    ]
+  },
+  {
+    "id": 72,
+    "name": [
+      "Herboriste",
+      "Herbalist",
+      "Herbolario",
+      "Herborista"
+    ]
+  },
+  {
+    "id": 73,
+    "name": [
+      "Mineur",
+      "Miner",
+      "Minero",
+      "Mineiro"
+    ]
+  },
+  {
+    "id": 64,
+    "name": [
+      "Paysan",
+      "Farmer",
+      "Campesino",
+      "Fazendeiro"
+    ]
+  },
+  {
+    "id": 75,
+    "name": [
+      "Pêcheur",
+      "Fisherman",
+      "Pescador",
+      "Pescador"
+    ]
+  },
+  {
+    "id": 74,
+    "name": [
+      "Trappeur",
+      "Trapper",
+      "Peletero",
+      "Caçador"
+    ]
+  },
+  {
+    "id": 77,
+    "name": [
+      "Armurier",
+      "Armorer",
+      "Armero",
+      "Armeiro"
+    ]
+  },
+  {
+    "id": 78,
+    "name": [
+      "Bijoutier",
+      "Jeweler",
+      "Joyero",
+      "Joalheiro"
+    ]
+  },
+  {
+    "id": 40,
+    "name": [
+      "Boulanger",
+      "Baker",
+      "Panadero",
+      "Padeiro"
+    ]
+  },
+  {
+    "id": 76,
+    "name": [
+      "Cuisinier",
+      "Chef",
+      "Cocinero",
+      "Cozinheiro"
+    ]
+  },
+  {
+    "id": 81,
+    "name": [
+      "Ebéniste",
+      "Handyman",
+      "Ebanista",
+      "Marceneiro"
+    ]
+  },
+  {
+    "id": 83,
+    "name": [
+      "Maitre d'Armes",
+      "Weapons Master",
+      "Maestro de armas",
+      "Mestre de armas"
+    ]
+  },
+  {
+    "id": 80,
+    "name": [
+      "Maroquinier",
+      "Leather Dealer",
+      "Marroquiniero",
+      "Coureiro"
+    ]
+  },
+  {
+    "id": 79,
+    "name": [
+      "Tailleur",
+      "Tailor",
+      "Sastre",
+      "Alfaiate"
+    ]
+  }
+]
