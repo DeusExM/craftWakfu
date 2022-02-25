@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Inventory;
 use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,22 +20,20 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    // /**
-    //  * @return Item[] Returns an array of Item objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    public function findCraftableObject(Inventory $inventory)
     {
         return $this->createQueryBuilder('i')
-            ->andWhere('i.exampleField = :val')
-            ->setParameter('val', $value)
+            ->innerJoin('i.ingredients' , 'ing')
+            ->innerJoin('i.inventoryItems' , 'iit')
+            ->innerJoin('iit.inventory' , 'inv')
+            ->andWhere('iit.inventory = :inventory')
+            ->setParameter('inventory', $inventory)
             ->orderBy('i.id', 'ASC')
-            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
 
     /*
     public function findOneBySomeField($value): ?Item

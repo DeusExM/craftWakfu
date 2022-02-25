@@ -46,15 +46,13 @@ class ImportDataCommand extends Command
         $arg1 = $input->getArgument('arg1');
 
         /** @var Item $item */
-                $item = $this->em->getRepository(Item::class)->findOneBy(["reference" => 10332]);
-                foreach ($item->getIngredients() as $ingredient) {
-                    dump($ingredient->getItem()->getName() . ' ' . $ingredient->getQuantity());
-                }
-
-                foreach ($item->getRecipe()->getIngredients() as $ingredient) {
-                    dump($ingredient->getItem()->getName() . ' ' . $ingredient->getQuantity());
-                }
-                die;
+        $item = $this->em->getRepository(Item::class)->findOneBy(["reference" => 10332]);
+        if ($item) {
+            foreach ($item->getRecipe()->getIngredients() as $ingredient) {
+                dump($ingredient->getItem()->getName() . ' ' . $ingredient->getQuantity());
+            }
+            die;
+        }
 
         $dataJson = json_decode(file_get_contents($this->parameterBag->get('kernel.project_dir') . '/public/Data.json'), true);
         $jobsJson = json_decode(file_get_contents($this->parameterBag->get('kernel.project_dir') . '/public/jobs.json'), true);
@@ -127,8 +125,8 @@ class ImportDataCommand extends Command
     {
         $rarities = $this->getRarity($raritiesJson);
         foreach ($dataJson as $data) {
-
-            if (!$data['id'] || !($data['id'] == 10332 || $data['id'] == 17374) ) {
+//          if (!$data['id'] || !($data['id'] == 10332 || $data['id'] == 17374) ) {
+            if (!$data['id']) {
                 continue;
             }
 
@@ -228,8 +226,7 @@ class ImportDataCommand extends Command
 
             $ingredientObject->setQuantity($qty)->setItem($itemIngredient);
             $ingredientObject->setRecipe($recipe);
-            //$recipe->addIngredient($ingredientObject);
-            $item->addIngredient($ingredientObject);
+            $recipe->addIngredient($ingredientObject);
             $this->em->persist($ingredientObject);
             $this->em->persist($recipe);
         }

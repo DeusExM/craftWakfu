@@ -3,21 +3,29 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use JetBrains\PhpStorm\Internal\LanguageLevelTypeAware;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User implements UserInterface, \Serializable
+class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'string', length: 255, unique: true)]
     private $email;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
 
     #[ORM\Column(type: 'string', length: 255)]
     private $password;
@@ -28,6 +36,9 @@ class User implements UserInterface, \Serializable
     #[ORM\Column(type: 'string', length: 255)]
     private $familyName;
 
+    #[ORM\OneToOne(inversedBy: 'user', targetEntity: Inventory::class, cascade: ['persist', 'remove'])]
+    private $inventory;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -36,6 +47,17 @@ class User implements UserInterface, \Serializable
     public function getEmail(): ?string
     {
         return $this->email;
+    }
+
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
     }
 
     public function setEmail(string $email): self
@@ -87,8 +109,7 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->email,
             $this->password,
-            // see section on salt below
-            // $this->salt,
+            $this->salt,
         ));
     }
 
@@ -98,14 +119,27 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->email,
             $this->password,
-            // see section on salt below
-            // $this->salt
+            $this->salt
             ) = unserialize($data, array('allowed_classes' => false));
     }
 
+    /**
+     * @see UserInterface
+     */
     public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
     }
 
     public function eraseCredentials()
@@ -116,5 +150,17 @@ class User implements UserInterface, \Serializable
     public function getUserIdentifier(): string
     {
         // TODO: Implement getUserIdentifier() method.
+    }
+
+    public function getInventory(): ?Inventory
+    {
+        return $this->inventory;
+    }
+
+    public function setInventory(?Inventory $inventory): self
+    {
+        $this->inventory = $inventory;
+
+        return $this;
     }
 }

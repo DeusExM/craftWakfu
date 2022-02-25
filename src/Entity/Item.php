@@ -50,12 +50,19 @@ class Item
     #[ORM\OneToOne(inversedBy: 'item', targetEntity: Recipe::class, cascade: ['persist', 'remove'])]
     private $recipe;
 
+    #[ORM\Column(type: 'float')]
+    private $averagePrice = 0;
+
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: InventoryItems::class, orphanRemoval: true)]
+    private $inventoryItems;
+
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: Ingredient::class)]
     private $ingredients;
 
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();
+        $this->inventoryItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -219,6 +226,48 @@ class Item
             // set the owning side to null (unless already changed)
             if ($ingredient->getItem() === $this) {
                 $ingredient->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAveragePrice(): ?float
+    {
+        return $this->averagePrice;
+    }
+
+    public function setAveragePrice(float $averagePrice): self
+    {
+        $this->averagePrice = $averagePrice;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, InventoryItems>
+     */
+    public function getInventoryItems(): Collection
+    {
+        return $this->inventoryItems;
+    }
+
+    public function addInventoryItem(InventoryItems $inventoryItem): self
+    {
+        if (!$this->inventoryItems->contains($inventoryItem)) {
+            $this->inventoryItems[] = $inventoryItem;
+            $inventoryItem->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInventoryItem(InventoryItems $inventoryItem): self
+    {
+        if ($this->inventoryItems->removeElement($inventoryItem)) {
+            // set the owning side to null (unless already changed)
+            if ($inventoryItem->getItem() === $this) {
+                $inventoryItem->setItem(null);
             }
         }
 
