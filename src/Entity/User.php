@@ -108,7 +108,6 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
             $this->id,
             $this->email,
             $this->password,
-            $this->salt,
         ));
     }
 
@@ -118,7 +117,6 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
             $this->id,
             $this->email,
             $this->password,
-            $this->salt
             ) = unserialize($data, array('allowed_classes' => false));
     }
 
