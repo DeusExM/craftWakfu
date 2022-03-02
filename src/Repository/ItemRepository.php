@@ -20,15 +20,13 @@ class ItemRepository extends ServiceEntityRepository
         parent::__construct($registry, Item::class);
     }
 
-    public function findCraftableObject(Inventory $inventory)
+    public function findCraftableItems(array $items)
     {
         return $this->createQueryBuilder('i')
-            ->innerJoin('i.ingredients' , 'ing')
-            ->innerJoin('i.inventoryItems' , 'iit')
-            ->innerJoin('iit.inventory' , 'inv')
-            ->andWhere('iit.inventory = :inventory')
-            ->setParameter('inventory', $inventory)
-            ->orderBy('i.id', 'ASC')
+            ->innerJoin('i.recipe' , 'r')
+            ->innerJoin('r.ingredients' , 'igr')
+            ->where('igr.item IN (:items)')
+            ->setParameter('items', $items)
             ->getQuery()
             ->getResult()
         ;

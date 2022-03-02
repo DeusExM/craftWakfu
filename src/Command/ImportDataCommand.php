@@ -45,14 +45,11 @@ class ImportDataCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $arg1 = $input->getArgument('arg1');
 
-        /** @var Item $item */
-        $item = $this->em->getRepository(Item::class)->findOneBy(["reference" => 10332]);
-        if ($item) {
-            foreach ($item->getRecipe()->getIngredients() as $ingredient) {
-                dump($ingredient->getItem()->getName() . ' ' . $ingredient->getQuantity());
-            }
-            die;
-        }
+       /** @var Item $item */
+     /*   $item = $this->em->getRepository(Item::class)->findOneBy(["reference" => 9550]);
+        if (!$item) {
+            continue;
+        }*/
 
         $dataJson = json_decode(file_get_contents($this->parameterBag->get('kernel.project_dir') . '/public/Data.json'), true);
         $jobsJson = json_decode(file_get_contents($this->parameterBag->get('kernel.project_dir') . '/public/jobs.json'), true);

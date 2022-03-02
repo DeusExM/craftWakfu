@@ -1,0 +1,42 @@
+@import "~bootstrap/scss/bootstrap";
+
+
+.bg-mythique {
+  --bs-bg-opacity: 1;
+  background-color: orange !important;
+}
+
+.bg-commun {
+  --bs-bg-opacity: 1;
+  background-color: white !important;
+}
+
+.bg-rare {
+  --bs-bg-opacity: 1;
+  background-color: #00dd00 !important;
+}
+
+.bg-relique {
+  --bs-bg-opacity: 1;
+  background-color: #ec9e0b !important;
+}
+
+.bg-epique {
+  --bs-bg-opacity: 1;
+  background-color: #ec9e0b !important;
+}
+
+.bg-legendaire {
+  --bs-bg-opacity: 1;
+  background-color: #ffff00 !important;
+}
+
+.bg-souvenir {
+  --bs-bg-opacity: 1;
+  background-color: #ff69B4 !important;
+}
+
+.bg-relique {
+  --bs-bg-opacity: 1;
+  background-color: #ff00ff !important;
+}
