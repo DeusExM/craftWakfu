@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Créer son inventaire{% endblock %}
+
+{% block body %}
+    <h1>Créer son inventaire</h1>
+
+    {{ form_start(inventoryForm) }}
+    {{ form_row(inventoryForm.user) }}
+    <button type="submit" class="btn">Créer son inventaire</button>
+    {{ form_end(inventoryForm) }}
+{% endblock %}

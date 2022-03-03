@@ -4,13 +4,14 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Serializable as SerializableAlias;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInterface
+class User implements UserInterface, SerializableAlias, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -18,25 +19,25 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
     private $id;
 
     #[ORM\Column(type: 'string', length: 255, unique: true)]
-    private $email;
+    private ?string $email;
 
     #[ORM\Column(type: "json")]
-    private $roles = [];
+    private array $roles = [];
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $password;
+    private ?string $password;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $firstName;
+    private ?string $firstName;
 
     #[ORM\Column(type: 'string', length: 255)]
-    private $familyName;
+    private ?string $familyName;
 
     #[ORM\OneToOne(inversedBy: 'user', targetEntity: Inventory::class, cascade: ['persist', 'remove'])]
-    private $inventory;
+    private ?Inventory $inventory;
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     public function getId(): ?int
     {
@@ -102,7 +103,7 @@ class User implements UserInterface, \Serializable, PasswordAuthenticatedUserInt
         return $this;
     }
 
-    public function serialize()
+    public function serialize(): ?string
     {
         return serialize(array(
             $this->id,
