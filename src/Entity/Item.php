@@ -59,6 +59,11 @@ class Item
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: Ingredient::class)]
     private $ingredients;
 
+    public function __toString(): string
+    {
+        return $this->getName() . ' ' . $this->getLvlItem() . ' [' . $this->getRarity() . ']';
+    }
+
     public function __construct()
     {
         $this->ingredients = new ArrayCollection();

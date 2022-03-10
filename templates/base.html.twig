@@ -15,7 +15,15 @@
     </head>
     <body>
         <div class="container">
-            {% block body %}{% endblock %}
+                {% block header %}
+                    {% include 'partials/_header.html.twig' %}
+                {% endblock %}
+
+                {% block content %}{% endblock %}
+
+                {% block footer %}
+                    {% include 'partials/_footer.html.twig' %}
+                {% endblock %}
         </div>
     </body>
 </html>

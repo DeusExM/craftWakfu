@@ -21,6 +21,11 @@ class Inventory
     #[ORM\OneToMany(mappedBy: 'inventory', targetEntity: InventoryItems::class, orphanRemoval: true)]
     private $inventoryItems;
 
+    public function __toString(): string
+    {
+        return $this->getId();
+    }
+
     public function __construct()
     {
         $this->inventoryItems = new ArrayCollection();
