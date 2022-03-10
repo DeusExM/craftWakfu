@@ -1,6 +1,7 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Ingredient;
 use App\Entity\InventoryItems;
 use App\Entity\Item;
 use App\Entity\User;
@@ -30,14 +31,28 @@ class HomeController extends AbstractController
         foreach ($inventory->getInventoryItems() as $inventoryItem) {
             $inventoryItems[$inventoryItem->getItem()->getName()] = ["item" => $inventoryItem->getItem(),"qty" =>  $inventoryItem->getQuantity()];
         }
-        $craftableItems = $em->getRepository(Item::class)->findCraftableItems($inventoryItems);
+        $itemsCouldBeCraft = $em->getRepository(Item::class)->findCraftableItems($inventoryItems);
 
-        foreach ($craftableItems as $item) {
+        $itemCraftable = [];
+        $itemNonCraftable = [];
+        /** @var Item $item */
+        foreach ($itemsCouldBeCraft as $item) {
+            $canDoThisItem = true;
+            /** @var Ingredient $ingredient */
             foreach ($item->getRecipe()->getIngredients() as $ingredient) {
+                if (!isset($inventoryItems[$ingredient->getItem()->getName()]['qty']) || ($inventoryItems[$ingredient->getItem()->getName()]['qty'] - $ingredient->getQuantity()) <= 0) {
+                    $canDoThisItem = false;
+                }
+
                 if (isset($inventoryItems[$ingredient->getItem()->getName()])) {
                     $ingredient->getItem()->haveSome = true;
                     $ingredient->getItem()->qty = $inventoryItems[$ingredient->getItem()->getName()]['qty'];
                 }
+            }
+            if ($canDoThisItem) {
+                $itemCraftable[] = $item;
+            } else {
+                $itemNonCraftable[] = $item;
             }
         }
 
@@ -76,7 +91,8 @@ $craftAvailable = [];
             'page_title' => 'test',
             'user' => $user,
             'inventoryItems' => $inventoryItems,
-            'craftableItems' => $craftableItems,
+            'itemCraftable' => $itemCraftable,
+            'itemNonCraftable' => $itemNonCraftable,
         ]);
     }
 }

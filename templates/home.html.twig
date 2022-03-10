@@ -12,7 +12,59 @@
         </tr>
         </thead>
         <tbody>
-        {% for nbr, item in craftableItems %}
+
+        <h1>Items tous les ingrédients</h1>
+        {% for nbr, item in itemCraftable %}
+            <tr>
+                <th scope="row">{{ nbr }}</th>
+                <td class="bg-{{ item.rarity|replace({'é':'e'})|lower }}">{{ item.name }}</td>
+                <td>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Nom de l'objet</th>
+                            <th scope="col">Qty needed</th>
+                            <th scope="col">Qty en stock</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for nbr, ingredient in item.recipe.ingredients %}
+                            {% set class = '' %}
+                            {% if ingredient.item.haveSome is defined and ingredient.item.haveSome %}
+                                {% set class = 'table-primary' %}
+                            {% endif %}
+
+                            <tr class="{{ class }}">
+                                <th scope="row">{{ nbr }}</th>
+                                <td>{{ ingredient.item.name }}</td>
+                                <td>{{ ingredient.quantity }}</td>
+                                <td>{% if ingredient.item.qty is defined and ingredient.item.qty %}{{ ingredient.item.qty }}{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="p-3 mb-2 bg-success text-white">
+                        Peut faire cette item
+                    </div>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nom de l'objet</th>
+            <th scope="col">Recette</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <h1>Items manque ingrédients</h1>
+        {% for nbr, item in itemNonCraftable %}
             <tr>
                 <th scope="row">{{ nbr }}</th>
                 <td class="bg-{{ item.rarity|replace({'é':'e'})|lower }}">{{ item.name }}</td>
@@ -55,6 +107,7 @@
                 </td>
             </tr>
         {% endfor %}
+
         </tbody>
     </table>
 
