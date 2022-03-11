@@ -38,18 +38,28 @@ class HomeController extends AbstractController
         $itemNonCraftable = [];
         /** @var Item $item */
         foreach ($itemsCouldBeCraft as $item) {
+            $maxItemCraftable = 999999;
             $canDoThisItem = true;
             $numberIngredientAvailable = ['count_items_needed' => $item->getRecipe()->getIngredients()->count() , 'count_items_available' => 0];
             /** @var Ingredient $ingredient */
             foreach ($item->getRecipe()->getIngredients() as $ingredient) {
 
                 if (isset($inventoryItems[$ingredient->getItem()->getName()])) {
-                    if (($inventoryItems[$ingredient->getItem()->getName()]['qty'] - $ingredient->getQuantity()) >= 0) {
+
+                    $ingredient->getItem()->haveSome = true;
+                    $ingredient->getItem()->qty = $inventoryItems[$ingredient->getItem()->getName()]['qty'] ?? 0;
+
+                    if (($ingredient->getItem()->qty  - $ingredient->getQuantity()) >= 0) {
                         $numberIngredientAvailable['count_items_available']++ ;
                     }
 
-                    $ingredient->getItem()->haveSome = true;
-                    $ingredient->getItem()->qty = $inventoryItems[$ingredient->getItem()->getName()]['qty'];
+                    if ($ingredient->getItem()->qty) {
+                        if (($ingredient->getItem()->qty / $ingredient->getQuantity()) < $maxItemCraftable) {
+                            $maxItemCraftable = $ingredient->getItem()->qty / $ingredient->getQuantity();
+                        }
+                    }
+
+
                 }
 
                 if (!isset($inventoryItems[$ingredient->getItem()->getName()]['qty']) || ($inventoryItems[$ingredient->getItem()->getName()]['qty'] - $ingredient->getQuantity()) <= 0) {
@@ -57,7 +67,7 @@ class HomeController extends AbstractController
                 }
             }
             $item->numberIngredientAvailable = $numberIngredientAvailable;
-
+            $item->maxItemCraftable = $maxItemCraftable === 999999 || !$canDoThisItem ? 0 : (int)$maxItemCraftable;
             $maxMissingIngredient = 2;
             if ($numberIngredientAvailable['count_items_needed'] - $numberIngredientAvailable['count_items_available'] <= $maxMissingIngredient) {
                 if ($canDoThisItem) {

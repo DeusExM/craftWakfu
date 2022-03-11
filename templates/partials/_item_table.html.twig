@@ -5,6 +5,7 @@
         <th scope="col">id</th>
         <th scope="col">Nom de l'objet</th>
         <th scope="col">Objets # suffisant / objets totals</th>
+        <th scope="col">Item Max craftable</th>
         <th scope="col">Recette</th>
     </tr>
     </thead>
@@ -17,11 +18,13 @@
             <th scope="row">{{ item.id }}</th>
             <td class="bg-{{ item.rarity|replace({'é':'e'})|lower }}">{{ item.name }}</td>
             <td>{{ item.numberIngredientAvailable.count_items_available }}/{{ item.numberIngredientAvailable.count_items_needed }}</td>
+            <td>{{ item.maxItemCraftable }}</td>
             <td>
                 <table class="table">
                     <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">id</th>
                         <th scope="col">Nom de l'objet</th>
                         <th scope="col">Qty needed</th>
                         <th scope="col">Qty en stock</th>
@@ -39,12 +42,13 @@
                         {% if ingredient.item.haveSome is defined and ingredient.item.haveSome %}
                             {% set class = 'table-warning' %}
                         {% endif %}
-                        {% if ingredient.item.qty is defined and ingredient.item.qty and (ingredient.item.qty -  ingredient.quantity) > 0 %}
+                        {% if ingredient.item.qty is defined and ingredient.item.qty and (ingredient.item.qty -  ingredient.quantity) >= 0 %}
                             {% set class = 'table-success' %}
                         {% endif %}
 
                         <tr class="{{ class }}">
                             <th scope="row">{{ nbr }}</th>
+                            <td>{{ ingredient.item.id }}</td>
                             <td>{{ ingredient.item.name }}</td>
                             <td>{{ ingredient.quantity }}</td>
                             <td>{% if ingredient.item.qty is defined and ingredient.item.qty %}{{ ingredient.item.qty }}{%  else %}-{% endif %}</td>
