@@ -23,7 +23,8 @@ class HomeController extends AbstractController
 
         /** @var User $user */
         $user = $this->getUser();
-
+        $itemCraftable = [];
+        $itemNonCraftable = [];
         $inventory = $user->getInventory();
 
         $inventoryItems = [];
@@ -38,21 +39,32 @@ class HomeController extends AbstractController
         /** @var Item $item */
         foreach ($itemsCouldBeCraft as $item) {
             $canDoThisItem = true;
+            $numberIngredientAvailable = ['count_items_needed' => $item->getRecipe()->getIngredients()->count() , 'count_items_available' => 0];
             /** @var Ingredient $ingredient */
             foreach ($item->getRecipe()->getIngredients() as $ingredient) {
-                if (!isset($inventoryItems[$ingredient->getItem()->getName()]['qty']) || ($inventoryItems[$ingredient->getItem()->getName()]['qty'] - $ingredient->getQuantity()) <= 0) {
-                    $canDoThisItem = false;
-                }
 
                 if (isset($inventoryItems[$ingredient->getItem()->getName()])) {
+                    if (($inventoryItems[$ingredient->getItem()->getName()]['qty'] - $ingredient->getQuantity()) >= 0) {
+                        $numberIngredientAvailable['count_items_available']++ ;
+                    }
+
                     $ingredient->getItem()->haveSome = true;
                     $ingredient->getItem()->qty = $inventoryItems[$ingredient->getItem()->getName()]['qty'];
                 }
+
+                if (!isset($inventoryItems[$ingredient->getItem()->getName()]['qty']) || ($inventoryItems[$ingredient->getItem()->getName()]['qty'] - $ingredient->getQuantity()) <= 0) {
+                    $canDoThisItem = false;
+                }
             }
-            if ($canDoThisItem) {
-                $itemCraftable[] = $item;
-            } else {
-                $itemNonCraftable[] = $item;
+            $item->numberIngredientAvailable = $numberIngredientAvailable;
+
+            $maxMissingIngredient = 2;
+            if ($numberIngredientAvailable['count_items_needed'] - $numberIngredientAvailable['count_items_available'] <= $maxMissingIngredient) {
+                if ($canDoThisItem) {
+                    $itemCraftable[] = $item;
+                } else {
+                    $itemNonCraftable[] = $item;
+                }
             }
         }
 
