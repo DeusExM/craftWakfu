@@ -27,6 +27,8 @@ class ItemRepository extends ServiceEntityRepository
             ->innerJoin('r.ingredients' , 'igr')
             ->where('igr.item IN (:items)')
             ->setParameter('items', $items)
+            ->orderBy('i.lvlItem', 'DESC')
+            ->addOrderBy('i.rarity', 'ASC')
             ->getQuery()
             ->getResult()
         ;

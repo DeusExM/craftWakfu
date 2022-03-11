@@ -3,6 +3,7 @@
     <tr>
         <th scope="col">#</th>
         <th scope="col">id</th>
+        <th scope="col">level</th>
         <th scope="col">Nom de l'objet</th>
         <th scope="col">Objets # suffisant / objets totals</th>
         <th scope="col">Item Max craftable</th>
@@ -16,6 +17,7 @@
         <tr>
             <th scope="row">{{ nbr }}</th>
             <th scope="row">{{ item.id }}</th>
+            <th scope="row">{{ item.lvlItem }}</th>
             <td class="bg-{{ item.rarity|replace({'é':'e'})|lower }}">{{ item.name }}</td>
             <td>{{ item.numberIngredientAvailable.count_items_available }}/{{ item.numberIngredientAvailable.count_items_needed }}</td>
             <td>{{ item.maxItemCraftable }}</td>
