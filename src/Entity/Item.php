@@ -59,6 +59,12 @@ class Item
     #[ORM\OneToMany(mappedBy: 'item', targetEntity: Ingredient::class)]
     private $ingredients;
 
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: Sale::class)]
+    private $sales;
+
+    #[ORM\OneToMany(mappedBy: 'item', targetEntity: ItemToCraft::class, orphanRemoval: true)]
+    private $itemToCrafts;
+
     public function __toString(): string
     {
         return $this->getName() . ' ' . $this->getLvlItem() . ' [' . $this->getRarity() . ']';
@@ -68,6 +74,8 @@ class Item
     {
         $this->ingredients = new ArrayCollection();
         $this->inventoryItems = new ArrayCollection();
+        $this->sales = new ArrayCollection();
+        $this->itemToCrafts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -273,6 +281,66 @@ class Item
             // set the owning side to null (unless already changed)
             if ($inventoryItem->getItem() === $this) {
                 $inventoryItem->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sale>
+     */
+    public function getsales(): Collection
+    {
+        return $this->sales;
+    }
+
+    public function addsale(Sale $sale): self
+    {
+        if (!$this->sales->contains($sale)) {
+            $this->sales[] = $sale;
+            $sale->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSale(Sale $sale): self
+    {
+        if ($this->sales->removeElement($sale)) {
+            // set the owning side to null (unless already changed)
+            if ($sale->getItem() === $this) {
+                $sale->setItem(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ItemToCraft>
+     */
+    public function getItemToCrafts(): Collection
+    {
+        return $this->itemToCrafts;
+    }
+
+    public function addItemToCraft(ItemToCraft $itemToCraft): self
+    {
+        if (!$this->itemToCrafts->contains($itemToCraft)) {
+            $this->itemToCrafts[] = $itemToCraft;
+            $itemToCraft->setItem($this);
+        }
+
+        return $this;
+    }
+
+    public function removeItemToCraft(ItemToCraft $itemToCraft): self
+    {
+        if ($this->itemToCrafts->removeElement($itemToCraft)) {
+            // set the owning side to null (unless already changed)
+            if ($itemToCraft->getItem() === $this) {
+                $itemToCraft->setItem(null);
             }
         }
 

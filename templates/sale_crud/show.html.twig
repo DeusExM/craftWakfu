@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sale{% endblock %}
+
+{% block body %}
+    <h1>Sale</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ sale.id }}</td>
+            </tr>
+            <tr>
+                <th>Tax</th>
+                <td>{{ sale.tax }}</td>
+            </tr>
+            <tr>
+                <th>Sale</th>
+                <td>{{ sale.sale }}</td>
+            </tr>
+            <tr>
+                <th>SaleAt</th>
+                <td>{{ sale.saleAt ? sale.saleAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>ForSaleAt</th>
+                <td>{{ sale.forSaleAt ? sale.forSaleAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sale_crud_index') }}">back to list</a>
+
+    <a href="{{ path('app_sale_crud_edit', {'id': sale.id}) }}">edit</a>
+
+    {{ include('sale_crud/_delete_form.html.twig') }}
+{% endblock %}

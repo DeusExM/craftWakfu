@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Sale{% endblock %}
+
+{% block body %}
+    <h1>Edit Sale</h1>
+
+    {{ include('sale_crud/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_sale_crud_index') }}">back to list</a>
+
+    {{ include('sale_crud/_delete_form.html.twig') }}
+{% endblock %}

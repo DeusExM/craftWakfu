@@ -1,0 +1,150 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ventes{% endblock %}
+
+{% block content %}
+
+    <div class="card mt-4">
+        <div class="card-header">
+            <h2>Dashboard</h2>
+        </div>
+        <div class="card-body">
+           <div class="mt-2">
+                Total investi : {{ totalAllCost|format_currency('EUR', locale='fr') }}
+            </div>
+           <div class="mt-2">
+                Total vendu : {{ totalAllSold|format_currency('EUR', locale='fr') }}
+            </div>
+           <div class="mt-2">
+                Total invendu : {{ totalAllUnsold|format_currency('EUR', locale='fr') }}
+            </div>
+           <div class="mt-2">
+                Total Bénéfice : {{ totalAllMargin|format_currency('EUR', locale='fr') }}
+            </div>
+           <div class="mt-2">
+                Moyenne des coef : {{ totalAllcoef|number_format(2, ',', ' ') }}
+            </div>
+           <div class="mt-2">
+                Moyenne coef si tout vendu : {{ totalAllcoefIfSold|number_format(2, ',', ' ') }}
+            </div>
+        </div>
+    </div>
+
+    {% for itemToCraft in itemsToCraft %}
+
+        <div class="card mt-4">
+            <div class="card-header">
+                <h3>#{{ itemToCraft.item.id }} - {{ itemToCraft.item.name }}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-4 mx-auto">
+                        <img src="{{ asset('images/items/' ~ itemToCraft.item.image ~ '.png') }}" alt="{{ itemToCraft.item.name }}" class="rounded mx-auto d-block  ">
+                        <div class="card mt-4">
+                            <div class="card-header">
+                                <h3>Résumé</h3>
+                            </div>
+                            <div class="card-body">
+                                <div class="mt-2">
+                                    Cout de l'item : {{ itemToCraft.cost|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Total taxe : {{ itemToCraft.totalTaxes|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Cout supplémentaire (achats objets, Xe taxes etc.) : {{ itemToCraft.totalExtraCost|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Total investi : {{ itemToCraft.totalCost|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Total Vendu : {{ itemToCraft.totalSale|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Total Invendu :  {{ itemToCraft.totalToSale|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Total Bénéfice :  {{ itemToCraft.totalMargin|format_currency('EUR', locale='fr') }}
+                                </div>
+                                <div class="mt-2">
+                                    Nombre de jour moyen pour vendre :  {{ itemToCraft.averageNumberOfDays|number_format(0) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <p><i>Recette (du craft vert au plus rare)</i></p>
+                        <table class="table table-striped">
+                            <thead>
+                            <tr>
+                                <th>Nom de l'objet</th>
+                                <th>id</th>
+                                <th>level</th>
+                                <th>Quantité</th>
+                                <th>Prix moyen</th>
+                                <th>Prix total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for craft in itemToCraft.craft %}
+                                <tr>
+                                    <td>{{ craft.name }}</td>
+                                    <td>{{ craft.id }}</td>
+                                    <td>{{ craft.level }}</td>
+                                    <td>{{ craft.quantity }}</td>
+                                    <td>{{ craft.averagePrice|format_currency('EUR', locale='fr') }}</td>
+                                    <td>{{ craft.total|format_currency('EUR', locale='fr') }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer pt-4">
+
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>id</th>
+                        <th>taxe</th>
+                        <th>cout</th>
+                        <th>cout total</th>
+                        <th>vente</th>
+                        <th>bénéfice</th>
+                        <th>coef</th>
+                        <th>date de mise en vente</th>
+                        <th>date de vente</th>
+                        <th>Nombre de joue pour vendre</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {% for i, sale in itemToCraft.item.sales %}
+                        {% if sale.saleAt %}
+                            {% set coef = (sale.sale/(itemToCraft.cost + sale.tax)) %}
+                        {% else %}
+                            {% set coef = 0 %}
+                        {% endif %}
+                        <tr class="table-{{ coef == 0 ? 'dark' : coef > 0 and coef < 1 ? 'danger' : coef >= 1 and coef <= 5 ? 'warning' : 'success' }}">
+                            <td>{{ i }}</td>
+                            <td>{{ sale.id }}</td>
+                            <td>{{ sale.tax|format_currency('EUR', locale='fr') }}</td>
+                            <td>{{ itemToCraft.cost |format_currency('EUR', locale='fr') }}</td>
+                            <td>{{ (itemToCraft.cost + sale.tax)|format_currency('EUR', locale='fr') }}</td>
+                            <td>{{ sale.sale|format_currency('EUR', locale='fr') }}</td>
+                            <td>{{ (sale.sale - itemToCraft.cost - sale.tax)|format_currency('EUR', locale='fr') }}</td>
+                            <td>{{ coef|number_format(2, ',', ' ') }}</td>
+                            <td> {{ sale.forSaleAt is not null ? sale.forSaleAt|date("d/m/Y") : '-' }}</td>
+                            <td>{{ sale.saleAt is not null ? sale.saleAt|date("d/m/Y") : '-' }}</td>
+                            <td>{{ sale.timeToSale }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

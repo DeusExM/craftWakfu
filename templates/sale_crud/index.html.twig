@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Sale index{% endblock %}
+
+{% block body %}
+    <h1>Sale index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Tax</th>
+                <th>Sale</th>
+                <th>SaleAt</th>
+                <th>ForSaleAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sale in sales %}
+            <tr>
+                <td>{{ sale.id }}</td>
+                <td>{{ sale.tax }}</td>
+                <td>{{ sale.sale }}</td>
+                <td>{{ sale.saleAt ? sale.saleAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ sale.forSaleAt ? sale.forSaleAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_sale_crud_show', {'id': sale.id}) }}">show</a>
+                    <a href="{{ path('app_sale_crud_edit', {'id': sale.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sale_crud_new') }}">Create new</a>
+{% endblock %}

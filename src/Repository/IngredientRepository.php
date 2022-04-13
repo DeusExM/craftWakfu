@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Ingredient;
+use App\Entity\Item;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,6 +20,15 @@ class IngredientRepository extends ServiceEntityRepository
         parent::__construct($registry, Ingredient::class);
     }
 
+    public function findAllItemName($recipes)
+    {
+        return $this->createQueryBuilder('ing')
+            ->setParameter('recipes', $recipes)
+            ->andWhere('ing.recipe in (:recipes)')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
     // /**
     //  * @return Ingredient[] Returns an array of Ingredient objects
     //  */

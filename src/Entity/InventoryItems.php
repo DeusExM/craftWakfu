@@ -6,6 +6,7 @@ use App\Repository\InventoryItemsRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: InventoryItemsRepository::class)]
+#[ORM\UniqueConstraint(name: "unique_asset", columns: ["item_id", "inventory_id"])]
 class InventoryItems
 {
     #[ORM\Id]

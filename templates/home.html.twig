@@ -4,7 +4,9 @@
 
 {% block content %}
 
-    {% include 'partials/_item_table.html.twig' with { title: 'Items tous les ingrédients', itemNonCraftable: itemCraftable } %}
-    {% include 'partials/_item_table.html.twig' with { title: 'Items manque ingrédients', itemNonCraftable: itemNonCraftable } %}
+    {%  if itemCraftable is defined %}
+        {% include 'partials/_item_table.html.twig' with { title: 'Items tous les ingrédients', itemNonCraftable: itemCraftable } %}
+        {% include 'partials/_item_table.html.twig' with { title: 'Items manque ingrédients', itemNonCraftable: itemNonCraftable } %}
+    {% endif %}
 
 {% endblock %}

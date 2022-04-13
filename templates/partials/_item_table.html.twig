@@ -1,13 +1,14 @@
 <table class="table table-striped">
     <thead>
     <tr>
-        <th scope="col">#</th>
-        <th scope="col">id</th>
-        <th scope="col">level</th>
-        <th scope="col">Nom de l'objet</th>
-        <th scope="col">Objets # suffisant / objets totals</th>
-        <th scope="col">Item Max craftable</th>
-        <th scope="col">Recette</th>
+        <th>#</th>
+        <th>id</th>
+        <th>Nom de l'objet</th>
+        <th>level</th>
+        <th>Prix total</th>
+        <th>Objets # suffisant / objets totals</th>
+        <th>Item Max craftable</th>
+        <th>Recette</th>
     </tr>
     </thead>
     <tbody>
@@ -15,22 +16,24 @@
     <h1>{{ title }}</h1>
     {% for nbr, item in itemNonCraftable %}
         <tr>
-            <th scope="row">{{ nbr }}</th>
-            <th scope="row">{{ item.id }}</th>
-            <th scope="row">{{ item.lvlItem }}</th>
+            <td>{{ nbr }}</td>
+            <td>{{ item.id }}</td>
             <td class="bg-{{ item.rarity|replace({'é':'e'})|lower }}">{{ item.name }}</td>
+            <td>{{ item.lvlItem }}</td>
+            <td>{{ item.totalPrice }}</td>
             <td>{{ item.numberIngredientAvailable.count_items_available }}/{{ item.numberIngredientAvailable.count_items_needed }}</td>
             <td>{{ item.maxItemCraftable }}</td>
             <td>
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">id</th>
-                        <th scope="col">Nom de l'objet</th>
-                        <th scope="col">Qty needed</th>
-                        <th scope="col">Qty en stock</th>
-                        <th scope="col">Dispo</th>
+                        <th>#</th>
+                        <th>id</th>
+                        <th>Nom de l'objet</th>
+                        <th>Prix moyen</th>
+                        <th>Qty needed</th>
+                        <th>Qty en stock</th>
+                        <th>Dispo</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -44,17 +47,18 @@
                         {% if ingredient.item.haveSome is defined and ingredient.item.haveSome %}
                             {% set class = 'table-warning' %}
                         {% endif %}
-                        {% if ingredient.item.qty is defined and ingredient.item.qty and (ingredient.item.qty -  ingredient.quantity) >= 0 %}
+                        {% if ingredient.item.qty is defined and ingredient.item.qty and (ingredient.item.qty -  ingredient.quantity)>= 0 %}
                             {% set class = 'table-success' %}
                         {% endif %}
 
                         <tr class="{{ class }}">
-                            <th scope="row">{{ nbr }}</th>
+                            <th>{{ nbr }}</th>
                             <td>{{ ingredient.item.id }}</td>
                             <td>{{ ingredient.item.name }}</td>
+                            <td>{{ ingredient.item.averagePrice }}</td>
                             <td>{{ ingredient.quantity }}</td>
                             <td>{% if ingredient.item.qty is defined and ingredient.item.qty %}{{ ingredient.item.qty }}{%  else %}-{% endif %}</td>
-                            <td>{% if ingredient.item.qty is defined and ingredient.item.qty and (ingredient.item.qty -  ingredient.quantity) > 0 %}oui{%  else %}non{% endif %}</td>
+                            <td>{% if ingredient.item.qty is defined and ingredient.item.qty and (ingredient.item.qty -  ingredient.quantity)> 0 %}oui{%  else %}non{% endif %}</td>
                         </tr>
                     {% endfor %}
                     </tbody>

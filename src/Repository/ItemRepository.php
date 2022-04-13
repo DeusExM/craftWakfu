@@ -34,6 +34,20 @@ class ItemRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findItemSameName(Item $item)
+    {
+        return $this->createQueryBuilder('i')
+            ->where('i.name = :name')
+            ->andWhere("i.rarity != 'Ancien objet'")
+            ->andWhere("i.rarity != 'Souvenir'")
+            ->andWhere("i.recipe IS NOT NULL")
+            ->setParameter('name', $item->getName())
+            ->orderBy('i.name', 'ASC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
 
     /*
     public function findOneBySomeField($value): ?Item

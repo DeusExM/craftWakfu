@@ -5,6 +5,8 @@ namespace App\Controller\Admin;
 use App\Entity\Inventory;
 use App\Entity\InventoryItems;
 use App\Entity\Item;
+use App\Entity\ItemToCraft;
+use App\Entity\Sale;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -55,7 +57,13 @@ class DashboardController extends AbstractDashboardController
             MenuItem::linkToCrud('InventoryItem', 'fa fa-file-text', InventoryItems::class),
 
             MenuItem::section('Items'),
-            MenuItem::linkToCrud('Inventory', 'fa fa-tags', Item::class),
+            MenuItem::linkToCrud('Items', 'fa fa-tags', Item::class),
+
+            MenuItem::section('Sales'),
+            MenuItem::linkToCrud('Sales', 'fa fa-tags', Sale::class),
+
+            MenuItem::section('Item To Craft'),
+            MenuItem::linkToCrud('Item To Craft', 'fa fa-tags', ItemToCraft::class),
 
             MenuItem::section('Action'),
             MenuItem::linkToLogout('Logout', 'fa fa-exit'),
