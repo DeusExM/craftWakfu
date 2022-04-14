@@ -40,3 +40,51 @@
   --bs-bg-opacity: 1;
   background-color: #ff00ff !important;
 }
+
+.bg-light-blue {
+  --bs-bg-opacity: 1;
+  background-color: #06e6fa !important;
+}
+
+.bg-blue {
+  --bs-bg-opacity: 1;
+  background-color: #4cc6f4 !important;
+}
+
+.bg-light-purple {
+  --bs-bg-opacity: 1;
+  background-color: #f5b8eb !important;
+}
+
+.bg-light-pink {
+  --bs-bg-opacity: 1;
+  background-color: #fab4bb !important;
+}
+
+.bg-light-green{
+  --bs-bg-opacity: 1;
+  background-color: #9cf8b5 !important;
+}
+
+.bg-light-yellow{
+  --bs-bg-opacity: 1;
+  background-color: #ffe922 !important;
+}
+
+.im {
+  position: relative;
+  z-index: 1;
+  &:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    opacity: 0.9;
+    background-color: white;
+    z-index: -1;
+  }
+}
+
+

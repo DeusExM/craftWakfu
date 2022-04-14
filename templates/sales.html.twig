@@ -5,10 +5,10 @@
 {% block content %}
 
     <div class="card mt-4">
-        <div class="card-header">
+        <div class="card-header bg-blue">
             <h2>Dashboard</h2>
         </div>
-        <div class="card-body">
+        <div class="card-body im" style="background-image: url('{{ asset('images/background/kamas_chest.jpg') }}')">
            <div class="mt-2">
                 Total investi : {{ totalAllCost|format_currency('EUR', locale='fr') }}
             </div>
@@ -33,7 +33,7 @@
     {% for itemToCraft in itemsToCraft %}
 
         <div class="card mt-4">
-            <div class="card-header">
+            <div class="card-header bg-light-pink">
                 <h3>#{{ itemToCraft.item.id }} - {{ itemToCraft.item.name }}</h3>
             </div>
             <div class="card-body">
@@ -41,7 +41,7 @@
                     <div class="col-sm-4 mx-auto">
                         <img src="{{ asset('images/items/' ~ itemToCraft.item.image ~ '.png') }}" alt="{{ itemToCraft.item.name }}" class="rounded mx-auto d-block  ">
                         <div class="card mt-4">
-                            <div class="card-header">
+                            <div class="card-header bg-light-green">
                                 <h3>Résumé</h3>
                             </div>
                             <div class="card-body">

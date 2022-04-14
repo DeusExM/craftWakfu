@@ -6,6 +6,7 @@ use App\Repository\ItemToCraftRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ItemToCraftRepository::class)]
+#[ORM\UniqueConstraint(name: "unique_product", columns: ["item_id", "user_id"])]
 class ItemToCraft
 {
     #[ORM\Id]
